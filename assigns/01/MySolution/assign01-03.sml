@@ -18,11 +18,13 @@ In particular, your implementation should guarantee:
 use "./../MySolution/assign01-02.sml";
 
 fun xlist_remove_reverse(xs: 'a xlist): 'a xlist =
-  case xs of
-    xlist_nil => xlist_nil
-    | xlist_cons(x, xlist_nil) => xlist_cons(x, xlist_nil)
-    | xlist_cons(x, xlist_append(ys, zs)) =>  xlist_append(xlist_remove_reverse(ys), xlist_cons(x, xlist_remove_reverse(zs)))
-    | xlist_reverse(ys) => xlist_remove_reverse(ys)
-    | xlist_append(ys, zs) => xlist_append(xlist_remove_reverse(ys), xlist_remove_reverse(zs))
-
-
+    let 
+        fun aux(xs: 'a xlist, revRemoved: bool): 'a xlist = 
+            case xs of
+                xlist_nil => xlist_nil
+                | xlist_cons(x, xs') => if revRemoved then xlist_snoc(aux(xs', revRemoved), x) else xlist_cons(x, aux(xs', revRemoved))
+                | xlist_snoc(xs', x) => if revRemoved then xlist_cons(x, aux(xs', revRemoved)) else xlist_snoc(aux(xs', revRemoved), x)
+                | xlist_append(xs', ys') => xlist_append(aux(xs', revRemoved), aux(ys', revRemoved))
+                | xlist_reverse(xs') => aux(xs', not revRemoved)
+    in
+        aux(xs, false) end;
