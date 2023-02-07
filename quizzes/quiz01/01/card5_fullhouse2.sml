@@ -256,29 +256,10 @@ fun card5_fullhouse(cs: card5): bool
 
 fun
 card5_fullhouse(cs: card5): bool =
-let val (c1, c2, c3, c4, c5) = cs
-val r1 = card_rank(c1)
-val i1 = rank2int(r1)
-val r2 = card_rank(c2)
-val i2 = rank2int(r2)
-val r3 = card_rank(c3)
-val i3 = rank2int(r3)
-val r4 = card_rank(c4)
-val i4 = rank2int(r4)
-val r5 = card_rank(c5)
-val i5 = rank2int(r5)
-
-val rs = int5_sort(i1, i2, i3, i4, i5)
-val (r1, r2, r3, r4, r5) = rs
-in
-(r1 = r2 andalso r2 = r3 andalso r4 = r5) orelse
-(r1 = r2 andalso r3 = r4 andalso r4 = r5)
-end
-
 (*
 Please Give your implementation as follows:
 *)
 
 (* ****** ****** *)
 
-(* end of [CS320-2023-Spring-quiz01-card5_fullhouse.sml] *)
+(* end of [CS320-2023-Spring-quiz01-card5_fullhouse2.sml] *)
