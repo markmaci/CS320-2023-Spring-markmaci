@@ -49,8 +49,32 @@ int5_sort_nr(xs) for every 5-tuple xs of the type int5.
 *)
 (* ****** ****** *)
 
+fun min (x, y) = if x < y then x else y
+
+fun max (x, y) = if x > y then x else y
+
+
 fun
 int5_sort_nr(xs: int5): int5 =
+
+let val (x1, x2, x3, x4, x5) = xs
+  in
+    let
+      val a = min(min(min(min(x1, x2), x3), x4), x5)
+      val b = min(min(min(max(x1, x2), x3), x4), max(x5, a))
+      val c = min(min(max(max(x1, x2), x3), x4), max(x5, b))
+      val d = min(max(max(max(x1, x2), x3), x4), max(x5, c))
+      val e = max(max(max(max(x1, x2), x3), x4), x5)
+    in (a, b, c, d, e) end
+  end
+    
+
+
+
+
+
+
+
 (*
 Please Give your implementation as follows:
 *)
