@@ -11,22 +11,19 @@ print("[import ./../assign02.py] is done!")
 
 
 def mylist_mergesort(l1):
-    if l1 == mylist_nil():
+    if l1.get_ctag() == 0:
         return mylist_nil()
     else:
         xs = l1.get_cons2()
-        if xs == mylist_nil():
-            return l1.get_cons1()
+        if xs.get_ctag() == 0:
+            return mylist_cons(l1.get_cons1(), mylist_nil())
         else:
-            ys, zs = mylist_split(xs)
+            ys, zs = mylist_split(xs.get_cons2())
             return mylist_merge(mylist_mergesort(mylist_cons(l1.get_cons1(), ys)), mylist_mergesort(mylist_cons(xs.get_cons1(), zs)))
 
 
 def mylist_split(xs):
-    mylist_print(xs)
-    print('\n')
     if xs.get_ctag() == 0:
-        print("xs.get_ctag() == 0")
         return mylist_nil(), mylist_nil()
     else:
         if xs.get_cons2().get_ctag() == 0:
