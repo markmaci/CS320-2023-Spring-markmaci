@@ -21,4 +21,15 @@ find_root(f0: int -> int): int = ...
 
 (* ****** ****** *)
 
+fun find_root(f0: int -> int): int =
+    let
+        fun find_root_aux(f0: int -> int, n: int): int =
+            if(f0(n) = 0) then n
+            else if(f0(~n) = 0) then ~n
+            else find_root_aux(f0, n+1)
+    in
+        find_root_aux(f0, 0)
+    end
+
+
 (* end of [CS320-2023-Spring-assign03-01.sml] *)

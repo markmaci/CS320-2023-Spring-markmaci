@@ -18,4 +18,29 @@ fun list_longest_ascend(xs: int list): int list
 
 (* ****** ****** *)
 
+fun list_longest_ascend(xs: int list): int list =
+    let
+        fun helper (xs: int list, head: int): int list =
+            case xs of
+                [] => []
+            | x1::xs =>
+                if x1 >= head then
+                    x1::helper(xs, head)
+                else
+                    helper(xs, head)
+    in
+        case xs of
+            [] => []
+        | x1::xs => 
+        let
+            val sequence = x1::list_longest_ascend(helper(xs, x1))
+            val rest = list_longest_ascend(xs)
+        in
+            if length(sequence) >= length(rest) then
+                sequence
+            else
+                rest
+        end
+    end
+
 (* end of [CS320-2023-Spring-assign03-04.sml] *)
