@@ -27,3 +27,7 @@ val quiz02_02: (int list * int list) -> bool =
 
 
 
+val xs = [1,2,3,4,5]
+val ys = [15,20,30,40,~8]
+val () =
+assert320(quiz02_02(xs, ys) = true)

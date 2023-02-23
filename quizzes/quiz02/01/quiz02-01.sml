@@ -27,9 +27,9 @@ fun quiz02_01(word: string): char -> int =
         count
     end
     
+(*testing*)
 
-    
-
+val count = quiz02_01("abracadabra")
 
 
 
