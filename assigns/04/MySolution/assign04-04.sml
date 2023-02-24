@@ -70,19 +70,7 @@ list_forall(list_tabulate(i, fn n => (n, board_get (bd, n))), fn (r, c) => safet
 
 
 val board_get_boards = fn (i, bd) =>
-let
-    val zero = []
-    val one = if safety_test2(i, 1, bd, i) then zero @ [board_set(bd, i, 1)] else zero
-    val two = if safety_test2(i, 2, bd, i) then one @ [board_set(bd, i, 2)] else one
-    val three = if safety_test2(i, 3, bd, i) then two @ [board_set(bd, i, 3)] else two
-    val four = if safety_test2(i, 4, bd, i) then three @ [board_set(bd, i, 4)] else three
-    val five = if safety_test2(i, 5, bd, i) then four @ [board_set(bd, i, 5)] else four
-    val six = if safety_test2(i, 6, bd, i) then five @ [board_set(bd, i, 6)] else five
-    val seven = if safety_test2(i, 7, bd, i) then six @ [board_set(bd, i, 7)] else six
-    val eight = if safety_test2(i, 8, bd, i) then seven @ [board_set(bd, i, 8)] else seven
-in
-    eight
-end
+int1_foldleft(8, [], fn (res, j) => if safety_test2(i, j + 1, bd, i) then res @ [board_set(bd, i, j + 1)] else res)
 
 
 
