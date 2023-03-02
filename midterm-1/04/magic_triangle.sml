@@ -57,10 +57,7 @@ the previous.
 
 (* ****** ****** *)
 
-(*
-fun
-magic_triangle (n : int) : int list list = ...
-*)
+
 
 (* ****** ****** *)
 

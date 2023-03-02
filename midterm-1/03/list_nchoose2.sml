@@ -28,10 +28,41 @@ is insignificant.
 
 (* ****** ****** *)
 
-(*
-fun
-list_nchoose2(xs: int list): (int * int) list = ...
-*)
+fun all_pairs(xs: int list): (int * int) list =
+    let
+        fun pairs(x: int, ys: int list): (int * int) list =
+            let
+                fun pairs_helper(y: int, zs: int list): (int * int) list =
+                    case zs of
+                        [] => []
+                      | z::zs' => (x,y)::pairs_helper(y, zs') 
+            in
+                case ys of
+                    [] => []
+                  | y::ys' => pairs_helper(y, ys') @ pairs(x, ys')
+            end
+    in
+        case xs of
+            [] => []
+          | x::xs' => pairs(x, xs') @ all_pairs(xs')
+    end
+
+val allPairsTest = all_pairs([3,2,1,4])
+
+
+fun list_nchoose2(xs: int list): (int * int) list =
+    let
+        val allPairs = all_pairs(xs)
+        val filteredPairs = list_filter(allPairs, fn (x1,x2) => x1 <= x2)
+    in
+        filteredPairs
+    end
+
+
+val test = list_nchoose2([3,2,1,4])
+
+(* ****** ****** *)
+
 
 (* ****** ****** *)
 

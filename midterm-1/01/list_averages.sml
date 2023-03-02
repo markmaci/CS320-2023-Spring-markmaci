@@ -36,4 +36,41 @@ list_averages(xs: real list): real list = ...
 *)
 (* ****** ****** *)
 
+fun list_take(xs: real list, n: int): real list =
+    case xs of
+        [] => []
+      | y::ys =>
+        if n <= 0 then []
+        else y::list_take(ys, n-1)
+
+val taketest = list_take([1.0,2.0,3.0], 2)
+
+fun list_averages(xs: real list): real list = 
+    let
+        fun list_averages_aux(xs: real list, ys: real list, n: int): real list =
+            case xs of
+                [] => ys
+              | _ =>
+                if n > length xs then ys
+                else
+                    let
+                        val sum = list_foldleft(list_take(xs, n), 0.0, op +)
+                        val avg = sum / real(n)
+                    in
+                        list_averages_aux(xs, ys @ [avg], n+1) 
+                    end
+    in
+        list_averages_aux(xs, [], 1)
+    end
+
+(* ****** ****** *)
+    
+
+val test = list_averages([1.0,2.0,3.0])
+val test2 = list_averages([1.0,2.0,3.0,4.0])
+    
+
+    
+
+
 (* end of [CS320-2023-Spring-midterm1-list_averages.sml] *)

@@ -32,4 +32,24 @@ list_pairing
 *)
 (* ****** ****** *)
 
+fun get_last (xs: 'a list): 'a =
+  case xs of
+    [] => raise Fail "get_last"
+  | [x] => x
+  | x::ys => get_last ys
+
+fun list_pairing (xs: 'a list): ('a * 'a) list * 'a option =
+  let
+    fun list_pairing_aux (ys: 'a list): ('a * 'a) list =
+      case ys of
+    [] => []
+      | [x] => []
+      | x::y::zs => (x,y)::list_pairing_aux zs
+  in
+    case xs of
+      [] => ([], NONE)
+    | [x] => ([], SOME(x))
+    | x::ys => (list_pairing_aux xs, SOME(get_last ys))
+  end
+
 (* end of [CS320-2023-Spring-midterm1-list_pairing.sml] *)
