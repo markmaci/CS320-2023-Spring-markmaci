@@ -446,7 +446,7 @@ foreach_to_foldleft(foreach)
 val
 int1_forall =
 fn(xs, test) =>
-foreach_to_forall(int1_foreach)(xs, test)
+foreach_to_forall(int1_foreach)(xs, test)`
 
 (* ****** ****** *)
 (*
