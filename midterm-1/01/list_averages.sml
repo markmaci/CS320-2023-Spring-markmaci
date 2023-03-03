@@ -55,6 +55,7 @@ fun list_averages(xs: real list): real list =
                 else
                     let
                         val sum = list_foldleft(list_take(xs, n), 0.0, op +)
+                        
                         val avg = sum / real(n)
                     in
                         list_averages_aux(xs, ys @ [avg], n+1) 
