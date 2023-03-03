@@ -48,6 +48,8 @@ fn(x, y) => if x >= y then x else y
 
 (* ****** ****** *)
 
+
+
 (*
 Here are some examples that are based
 on the bintr_fold combinator
@@ -107,10 +109,26 @@ andalso bintr_size(tl) = bintr_size(tr)
 *)
 (* ****** ****** *)
 
-(*
-val
-bintr_balanced_nonrec = fn(t0: 'a bintr) => ...
-*)
+
+val bintr_balanced_nonrec = fn (t0: 'a bintr) => 
+    let
+        val result = bintr_fold(
+            t0,
+            fn _ => 1,
+            fn (l, r) => if l = r then r + 1 else 0
+        )
+    in
+        result <> 0
+    end
+
+(* ****** ****** *)
+
+
+
+
+
+
+
 
 (* ****** ****** *)
 

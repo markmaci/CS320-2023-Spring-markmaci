@@ -66,6 +66,29 @@ string_imap_list =
 fn(cs, ifopr) =>
 foreach_to_map_list(string_iforeach)(cs, ifopr)
 
+fun word_neighbors word =
+  let
+    val len = string_length word
+    val indices = list_tabulate (len, fn x => x)
+    fun get_neighbors_at_index index =
+      let
+        val c = strsub (word, index)
+        val exclude_self = list_filter([#"a", #"b", #"c", #"d", #"e", #"f", #"g", #"h", #"i", #"j", #"k", #"l", #"m", #"n", #"o", #"p", #"q", #"r", #"s", #"t", #"u", #"v", #"w", #"x", #"y", #"z"],(fn x => x <> c))
+        fun get_neighbor ch =
+          let
+            val new_word = string_tabulate (len, fn i => if i = index then ch else strsub (word, i))
+          in
+            if new_word <> word then [new_word] else []
+          end
+      in
+        list_concat (list_map (exclude_self, get_neighbor))
+      end
+  in
+    list_concat (list_map(indices, get_neighbors_at_index))
+  end
+
+
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm1-word_neighbors.sml] *)

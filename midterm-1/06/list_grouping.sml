@@ -23,10 +23,80 @@ two seconds)
 *)
 (* ****** ****** *)
 
-(*
 fun
-list_grouping(xs: int list): (int * int) list = ...
-*)
+list_mergesort
+(xs: int list): int list =
+let
+
+fun
+split
+(xs: int list): int list * int list =
+(
+case xs of
+  nil => ([], [])
+| x1 :: xs =>
+(
+  case xs of
+    nil => ([x1], [])
+  | x2 :: xs =>
+    let
+      val
+      (ys, zs) = split(xs)
+    in
+      (x1 :: ys, x2 :: zs)
+    end
+)
+)
+
+fun merge
+( ys: int list
+, zs: int list): int list =
+(
+case ys of
+  nil => zs
+| y1 :: ys =>
+(
+  case zs of
+    nil => y1 :: ys
+  | z1 :: zs =>
+    if y1 <= z1
+    then y1 :: merge(ys, z1 :: zs)
+    else z1 :: merge(y1 :: ys, zs)
+)
+)
+
+in
+
+case xs of
+  nil => []
+| x1 :: xs =>
+(
+  case xs of
+    nil => [x1]
+  | x2 :: xs =>
+    let
+      val (ys, zs) = split(xs)
+    in
+      merge(list_mergesort(x1 :: ys), list_mergesort(x2 :: zs))
+    end
+)
+
+end
+
+(* ****** ****** *)
+
+fun list_grouping(xs: int list): (int * int) list =
+  let
+    val sorted = list_mergesort(xs)
+    fun count_nums([], count, groups) = groups
+      | count_nums([x], count, groups) = (count, x) :: groups 
+      | count_nums(x::xs, count, groups) =
+        if x = hd(xs)
+        then count_nums(xs, count + 1, groups)
+        else count_nums(xs, 1, (count, x) :: groups)
+  in
+    count_nums(sorted, 1, [])
+  end
 
 (* ****** ****** *)
 

@@ -57,7 +57,39 @@ the previous.
 
 (* ****** ****** *)
 
+fun get_last (xs: 'a list): 'a =
+  case xs of
+    [] => raise Fail "get_last"
+  | [x] => x
+  | x::ys => get_last ys
 
+fun magic_triangle (n : int) : int list list =
+  let
+    fun next_row prev_row =
+      let
+        fun sum lst =
+          case lst of
+            [] => []
+          | [x] => [x]
+          | x::y::xs => (x + y) :: sum (y::xs)
+      in
+        [1] @ sum prev_row 
+      end
+
+    fun generate_rows n acc =
+      if n = 0 then acc
+      else generate_rows (n-1) (acc @ [next_row (get_last acc)])
+  in
+    generate_rows n [[1]]
+  end
+
+val test = magic_triangle 6
+
+(* ****** ****** *)
+
+(* end of [CS320-2023-Spring-midterm1-magic_triangle.sml] *)
+
+(* ****** ****** *)
 
 (* ****** ****** *)
 

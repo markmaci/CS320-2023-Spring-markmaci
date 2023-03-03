@@ -28,38 +28,57 @@ is insignificant.
 
 (* ****** ****** *)
 
-fun all_pairs(xs: int list): (int * int) list =
+val list_subsets = fn(xs: 'a list) => list_foldleft(xs, [[]], fn(item: 'a list list, x: 'a) => item @ list_map(item, fn(soFar) => soFar@[x]));
+
+fun list_nth(l: int list, index: int): int = 
+  (
+    case l of 
+    [] => raise Subscript
+    |
+    (x::l) => if index = 0 then x else list_nth(l, index-1)
+  );
+
+fun list_to_tuple(xs) = 
+    (list_nth(xs,0),list_nth(xs,1))
+
+fun ordered (xs) = 
+    if list_nth(xs, 0) <= list_nth(xs, 1) then xs else list_reverse(xs); 
+
+
+fun filter_for_pairs (l: int list list, result: int list list): int list list = 
+    (
+        case l of [] => result
+        |
+        (x::l) => if list_length(x) = 2 then filter_for_pairs(l,ordered(x)::result) else filter_for_pairs(l,result)
+    )
+
+
+fun
+list_nchoose2(xs: int list): (int * int) list = 
     let
-        fun pairs(x: int, ys: int list): (int * int) list =
-            let
-                fun pairs_helper(y: int, zs: int list): (int * int) list =
-                    case zs of
-                        [] => []
-                      | z::zs' => (x,y)::pairs_helper(y, zs') 
-            in
-                case ys of
-                    [] => []
-                  | y::ys' => pairs_helper(y, ys') @ pairs(x, ys')
-            end
+      val all = list_subsets(xs)
+      val result = filter_for_pairs(all,[])
     in
-        case xs of
-            [] => []
-          | x::xs' => pairs(x, xs') @ all_pairs(xs')
+      list_map(result, list_to_tuple)
     end
 
-val allPairsTest = all_pairs([3,2,1,4])
+
+val test = list_nchoose2([1,3,2,4]);
 
 
-fun list_nchoose2(xs: int list): (int * int) list =
-    let
-        val allPairs = all_pairs(xs)
-        val filteredPairs = list_filter(allPairs, fn (x1,x2) => x1 <= x2)
-    in
-        filteredPairs
-    end
+(* ****** ****** *)
+
+(* end of [CS320-2023-Spring-midterm1-list_nchoose2.sml] *)
+(* ****** ****** *)
+
+(* ****** ****** *)
+(* local variables: *)
+(* compile-command: "sml < CS320-2023-Spring-midterm1-list_nchoose2.sml" *)
 
 
-val test = list_nchoose2([3,2,1,4])
+
+
+
 
 (* ****** ****** *)
 
