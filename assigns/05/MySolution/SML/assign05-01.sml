@@ -45,6 +45,8 @@ ref_ifoldleft
 (ref: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r
 *)
 
+fun ref_get_at (ref, i) = if i = 0 then !ref else raise Fail "ref_get_at"   
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign05-01.sml] *)
