@@ -166,34 +166,27 @@ def findSeam(energy, height, width):
             seam[height-1] = i
     for i in range(height-2, -1, -1):
         if seam[i+1] == 0:
-            if energy[i][seam[i+1]] < energy[i][seam[i+1]+1]:
+            currentMin = min(energy[i][seam[i+1]], energy[i][seam[i+1]+1])
+            if currentMin == energy[i][seam[i+1]]:
                 seam[i] = seam[i+1]
             else:
                 seam[i] = seam[i+1]+1
         elif seam[i+1] == width-1:
-            if energy[i][seam[i+1]] < energy[i][seam[i+1]-1]:
+            currentMin = min(energy[i][seam[i+1]], energy[i][seam[i+1]-1])
+            if currentMin == energy[i][seam[i+1]]:
                 seam[i] = seam[i+1]
             else:
                 seam[i] = seam[i+1]-1
         else:
-            if energy[i][seam[i+1]] < energy[i][seam[i+1]-1] and energy[i][seam[i+1]] < energy[i][seam[i+1]+1]:
-                seam[i] = seam[i+1]
-            elif energy[i][seam[i+1]-1] < energy[i][seam[i+1]] and energy[i][seam[i+1]-1] < energy[i][seam[i+1]+1]:
+            currentMin = min(energy[i][seam[i+1]], energy[i][seam[i+1]-1], energy[i][seam[i+1]+1])
+            if currentMin == energy[i][seam[i+1]-1]:
                 seam[i] = seam[i+1]-1
+            elif currentMin == energy[i][seam[i+1]]:
+                seam[i] = seam[i+1]
             else:
                 seam[i] = seam[i+1]+1
 
     return seam
-
-# def removeSeam(image, seam, height, width):
-#     newImage = imgvec.image_make(height, width-1)
-#     for i in range(height):
-#         for j in range(width):
-#             if j < seam[i]:
-#                 imgvec.image_set_pixel(newImage, i, j, imgvec.image_get_pixel(image, i, j))
-#             elif j > seam[i]:
-#                 imgvec.image_set_pixel(newImage, i, j-1, imgvec.image_get_pixel(image, i, j))
-#     return newImage
 
 
 def image_seam_carving_color(image, ncol):
@@ -203,12 +196,25 @@ def image_seam_carving_color(image, ncol):
     """
     assert ncol < image.width
 
-    energy = image_edges_color(image)
-    cEnergy = cumulativeEnergy(energy, image.height, image.width)
-    seam = findSeam(cEnergy, image.height, image.width)
-    print(seam)
+    for i in range(ncol):
 
-    return None
+        energy = image_edges_color(image)
+        cEnergy = cumulativeEnergy(energy, image.height, image.width)
+
+
+        seam = findSeam(cEnergy, image.height, image.width)
+
+        seamRemoved = imgvec.image_make_pylist\
+        (image.height, image.width-1, imgvec.image_i2filter_pylist(image, lambda i0, j0, _: seam[i0] != j0))
+
+        newHeight = seamRemoved.height
+        newWidth = seamRemoved.width 
+
+        image = imgvec.image(newHeight, newWidth, seamRemoved.pixlst)
+
+    return image
+
+    
 
 ####################################################
 # save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
