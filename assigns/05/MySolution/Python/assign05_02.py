@@ -17,6 +17,9 @@ def word_neighbors(word):
     Your implementation should be combinator-based very
     much like the posted solution.
     """
-    raise NotImplementedError
+    AB = "abcdefghijklmnopqrstuvwxyz"
+    len_word = len(word)
+    return ["".join([word[j] if j != i else c for j in range(len_word)]) 
+            for i in range(len_word) for c in AB if c != word[i]]
 #
 ####################################################

@@ -45,7 +45,33 @@ ref_ifoldleft
 (ref: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r
 *)
 
-fun ref_get_at (ref, i) = if i = 0 then !ref else raise Fail "ref_get_at"   
+
+fun
+ref_get_at
+(r0: 'a ref, i: int): 'a =
+    if i = 0 then !r0
+    else raise Subscript
+
+fun
+ref_forall
+(r0: 'a ref, test: 'a -> bool): bool =
+    test(!r0)
+
+fun
+ref_map_list
+(r0: 'a ref, fopr: ('a) -> 'b): 'b list =
+    [fopr(!r0)]
+
+fun
+ref_foldleft
+(r0: 'a ref, res: 'r, fopr: ('r * 'a) -> 'r): 'r =
+    fopr(res, !r0)
+
+fun
+ref_ifoldleft
+(r0: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r =
+    fopr(res, 0, !r0)
+
 
 (* ****** ****** *)
 
