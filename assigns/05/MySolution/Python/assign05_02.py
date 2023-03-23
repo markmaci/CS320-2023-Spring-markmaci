@@ -19,7 +19,9 @@ def word_neighbors(word):
     """
     AB = "abcdefghijklmnopqrstuvwxyz"
     len_word = len(word)
-    return ["".join([word[j] if j != i else c for j in range(len_word)]) 
+    neighbors =  ["".join([word[j] if j != i else c for j in range(len_word)]) 
             for i in range(len_word) for c in AB if c != word[i]]
+ 
+    return pylist_fnlistize(neighbors)
 #
 ####################################################

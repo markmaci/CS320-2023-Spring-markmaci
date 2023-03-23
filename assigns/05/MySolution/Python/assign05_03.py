@@ -53,16 +53,11 @@ def save_color_image(image, filename, mode="PNG"):
     # return None
 
 ####################################################
-#
-# HX-2023-03-18:
-# This one is incorrect:
-# def grey_of_color(clr):
-#     (r0, b1, g2) = clr
-#     return round(0.299*r0+0.587*b1+0.114*g2)
+
 def grey_of_color(clr):
-    (rr, gg, bb) = clr
-    return round(0.299*rr+0.587*gg+0.114*bb)
-#
+    (r0, b1, g2) = clr
+    return round(0.299*r0+0.587*b1+0.114*g2)
+
 ####################################################
 
 def image_invert_grey(ximg):
@@ -147,6 +142,59 @@ def image_blur_bbehav_color(image, ksize, bbehav):
 # save_color_image\
 #    (image_blur_bbehav_color(balloons, 5, 'extend'), "OUTPUT/balloons_blurred.png")
 ####################################################
+    
+
+def cumulativeEnergy(energy, height, width):
+    cumulativeEnergy = [[0 for x in range(width)] for y in range(height)]
+    for i in range(0, height):
+        for j in range(width):
+            if j == 0:
+                cumulativeEnergy[i][j] = imgvec.image_get_pixel(energy, i, j) + min(cumulativeEnergy[i-1][j], cumulativeEnergy[i-1][j+1])
+            elif j == width-1:
+                cumulativeEnergy[i][j] = imgvec.image_get_pixel(energy, i, j) + min(cumulativeEnergy[i-1][j], cumulativeEnergy[i-1][j-1])
+            else:
+                cumulativeEnergy[i][j] = imgvec.image_get_pixel(energy, i, j) + min(cumulativeEnergy[i-1][j], cumulativeEnergy[i-1][j-1], cumulativeEnergy[i-1][j+1])
+            
+    return cumulativeEnergy
+
+def findSeam(energy, height, width):
+    seam = [0 for x in range(height)]
+    minEnergy = 10000
+    for i in range(width):
+        if energy[height-1][i] < minEnergy:
+            minEnergy = energy[height-1][i]
+            seam[height-1] = i
+    for i in range(height-2, -1, -1):
+        if seam[i+1] == 0:
+            if energy[i][seam[i+1]] < energy[i][seam[i+1]+1]:
+                seam[i] = seam[i+1]
+            else:
+                seam[i] = seam[i+1]+1
+        elif seam[i+1] == width-1:
+            if energy[i][seam[i+1]] < energy[i][seam[i+1]-1]:
+                seam[i] = seam[i+1]
+            else:
+                seam[i] = seam[i+1]-1
+        else:
+            if energy[i][seam[i+1]] < energy[i][seam[i+1]-1] and energy[i][seam[i+1]] < energy[i][seam[i+1]+1]:
+                seam[i] = seam[i+1]
+            elif energy[i][seam[i+1]-1] < energy[i][seam[i+1]] and energy[i][seam[i+1]-1] < energy[i][seam[i+1]+1]:
+                seam[i] = seam[i+1]-1
+            else:
+                seam[i] = seam[i+1]+1
+
+    return seam
+
+# def removeSeam(image, seam, height, width):
+#     newImage = imgvec.image_make(height, width-1)
+#     for i in range(height):
+#         for j in range(width):
+#             if j < seam[i]:
+#                 imgvec.image_set_pixel(newImage, i, j, imgvec.image_get_pixel(image, i, j))
+#             elif j > seam[i]:
+#                 imgvec.image_set_pixel(newImage, i, j-1, imgvec.image_get_pixel(image, i, j))
+#     return newImage
+
 
 def image_seam_carving_color(image, ncol):
     """
@@ -154,8 +202,13 @@ def image_seam_carving_color(image, ncol):
     ncols (an integer) columns from the image. Returns a new image.
     """
     assert ncol < image.width
+
     energy = image_edges_color(image)
-    raise NotImplementedError
+    cEnergy = cumulativeEnergy(energy, image.height, image.width)
+    seam = findSeam(cEnergy, image.height, image.width)
+    print(seam)
+
+    return None
 
 ####################################################
 # save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
