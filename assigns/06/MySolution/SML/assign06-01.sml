@@ -17,29 +17,18 @@ And so on, and so forth
 //
 *)
 
-(* ****** ****** *)
 
-
-fun the_ln2_stream () =
+fun ln2_helper(x: real, n: int): real stream = fn() =>
   let
-    fun ln2_helper (n, sign, sum) () =
-      let
-        val term = sign / Real.fromInt(n)
-      in
-        strcon_cons (sum + term, ln2_helper (n + 1, ~sign, sum + term))
-      end
+    val sign = if (n + 1) mod 2 = 0 then 1.0 else ~1.0
+    val term = sign / Real.fromInt(n)
+    val next = x + term
   in
-    strcon_cons (1.0, ln2_helper (2, ~1.0, 1.0 / 2.0))
+    strcon_cons(next, ln2_helper(next, n+1))
   end
-    
-
-(* ****** ****** *)
-
-(* end of [CS320-2023-Spring-assign06-01.sml] *)
-
-(* ****** ****** *)
 
 
-(* ****** ****** *)
+val the_ln2_stream: real stream = fn() =>
+    ln2_helper(0.0, 1) ()
 
 (* end of [CS320-2023-Spring-assign06-01.sml] *)
