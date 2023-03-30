@@ -649,6 +649,25 @@ def stream_make_filter(fxs, test):
             # end-of-(if(cxs.ctag==0)-then-else)
     return lambda: helper(fxs)
 
+def stream_concat(fxs, fys):
+    def helper(fxs):
+        cxs = fxs()
+        if cxs.ctag == 0:
+            return fys()
+        else:
+            return strcon_cons\
+                (cxs.cons1, lambda: helper(cxs.cons2))
+        # end-of-(if(cxs.ctag==0)-then-else)
+    return lambda: helper(fxs)
+
+
+def strcon_concat(xs, ys):
+    if xs.ctag == 0:
+        return ys
+    else:
+        return strcon_cons(xs.cons1, lambda: strcon_concat(xs.cons2(), ys))
+    # end-of-(if(xs.ctag==0)-then-else)
+
 ###########################################################################
 
 ######################### end of [mypylib-cls.py] #########################
