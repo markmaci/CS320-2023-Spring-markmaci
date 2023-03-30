@@ -47,6 +47,15 @@ def save_color_image(image, filename, mode="PNG"):
     out.close()
     # return None
 
+
+def image_hreflect(image):
+    ww = image.width
+    hh = image.height
+    return \
+         imgvec.image_make_i2map\
+         (image, \
+          lambda i0, j0, v0: \
+          imgvec.image_get_pixel(image, (i0*ww+j0)//ww, ww-1-(i0*ww+j0)%ww))
 ####################################################
 def image_vreflect(image):
     ww = image.width
@@ -54,7 +63,7 @@ def image_vreflect(image):
     return \
         imgvec.image_make_i2map\
         (image, \
-         lambda i0, j0, v0: imgvec.image_get_pixel(image, ??????, ??????))
+         lambda i0, j0, v0: imgvec.image_get_pixel(image, hh-1-i0, j0))
 ####################################################
 # balloons = \
 #     load_color_image\
