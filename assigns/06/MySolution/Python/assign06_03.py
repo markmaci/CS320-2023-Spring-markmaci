@@ -56,11 +56,10 @@ def fchildren(board):
         if board[s] == -1:
             i = s
             break
-    return pylist_filter_pylist(int1_map_pylist(len(board), lambda j: board_set_at(board, i, j+1)), lambda board: board_safety_all(board))
+    return pylist_filter_pylist(int1_map_pylist(len(board), lambda j: board_set_at(board, i, j+1)), lambda board: board_safety_one(board, i))
 
 def board_is_full(board):
     return int1_forall(len(board), lambda i: board[i] != -1)
-
 
 
 def dfs(boards_queue, fchildren):
@@ -83,18 +82,10 @@ def solve_N_queen_puzzle(N):
     q.put(empty_board)
     valid_boards = dfs(q, fchildren)
     filtered = stream_make_filter(valid_boards, lambda bd: board_is_full(bd))
+    final = stream_make_filter(filtered, lambda bd: board_safety_all(bd))
 
-    
+    return final
 
-    return filtered
-
-# theNQueenSols_4 = solve_N_queen_puzzle(4)
-
-# stream_iforeach\
-#    (theNQueenSols_4, lambda i, bd: print("solution(",i+1,") =", bd))
-
-# stream_iforall\
-#     (solve_N_queen_puzzle(5), lambda i,x: i<10000000 and not(print(x)))
 
 
 
