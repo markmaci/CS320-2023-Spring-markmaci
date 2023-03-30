@@ -86,36 +86,4 @@ def solve_N_queen_puzzle(N):
 
     return final
 
-
-
-
-
-    
-
-
-
-
-
-# print(test_dfs.cons2)
-    
-
-
-# solve_N_queen_puzzle(7)
-
-
-
- 
-
-
-        
-    
-
-
-
-
-
-    
-    
-
-
 ####################################################
