@@ -70,12 +70,12 @@ def image_invert_color(ximg):
 # towers = \
 #     load_color_image("INPUT/towers.jpg")
 balloons = \
-    load_color_image("INPUT/balloons.png")
+    load_color_image("/Users/markmaci/Projects/markmaci-CS320-2023-Spring/assigns/05/MySolution/Python/INPUT/balloons.png")
 #
 ####################################################
 #
 # save_color_image(image_invert_color(towers), "OUTPUT/towers_invert.png")
-save_color_image(image_invert_color(balloons), "OUTPUT/balloons_invert.png")
+# save_color_image(image_invert_color(balloons), "/Users/markmaci/Projects/markmaci-CS320-2023-Spring/assigns/05/MySolution/Python/OUTPUT/balloons_invert.png")
 #
 ####################################################
 
@@ -139,8 +139,8 @@ def image_blur_bbehav_color(image, ksize, bbehav):
         (lambda image: image_blur_bbehav_grey(image, ksize, bbehav))(image)
 
 ####################################################
-save_color_image\
-   (image_blur_bbehav_color(balloons, 5, 'extend'), "OUTPUT/balloons_blurred.png")
+# save_color_image\
+#    (image_blur_bbehav_color(balloons, 5, 'extend'), "/Users/markmaci/Projects/markmaci-CS320-2023-Spring/assigns/05/MySolution/Python/OUTPUT/balloons_blurred.png")
 ####################################################
     
 
@@ -215,7 +215,7 @@ def image_seam_carving_color(image, ncol):
 
     return image
 
-save_color_image(image_seam_carving_color(balloons, 100), "/Users/markmaci/Projects/markmaci-CS320-2023-Spring/assigns/05/MySolution/Python/OUTPUT/balloons_seam_carving_100.png")
+# save_color_image(image_seam_carving_color(balloons, 100), "/Users/markmaci/Projects/markmaci-CS320-2023-Spring/assigns/05/MySolution/Python/OUTPUT/balloons_seam_carving_100.png")
 
     
 

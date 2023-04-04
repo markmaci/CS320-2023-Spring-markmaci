@@ -5,7 +5,7 @@ from assign05_03 import *
 ######################################################
 balloons = \
     load_color_image\
-    ("./../../MySolution/Python/INPUT/balloons.png")
+    ("/Users/markmaci/Projects/markmaci-CS320-2023-Spring/assigns/05/MySolution/Python/INPUT/balloons.png")
 ######################################################
 ncol = 1
 balloons_1 = image_seam_carving_color(balloons, ncol)
