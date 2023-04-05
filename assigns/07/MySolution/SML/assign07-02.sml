@@ -19,5 +19,7 @@ theNatPairs_cubesum: (int * int) stream = fn () =>
 *)
 
 (* ****** ****** *)
-
+ 
 (* end of [CS320-2023-Spring-assign07-02.sml] *)
+
+val test = round(3.63)
