@@ -2,8 +2,8 @@ use "./../../../mysmlib/mysmlib-cls.sml";
 
 fun stream_cycling_list(xs: 'a list): 'a stream = fn() => 
     let
-        fun cycle (x::xs) = strcon_cons (x, fn() => cycle (xs @ [x]))
-          | cycle [] = strcon_nil
+        fun cycle [] = strcon_nil
+          | cycle (x::xs) = strcon_cons (x, fn() => cycle (xs @ [x]))
     in
         cycle xs
         

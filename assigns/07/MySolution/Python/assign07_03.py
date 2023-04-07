@@ -9,6 +9,7 @@ sys.path.append('./../../../../mypylib')
 from dictwords import *
 from mypylib_cls import *
 from assign05_02 import *
+import queue as Q
 ####################################################
 """
 HX-2023-03-24: 10 points
@@ -31,12 +32,47 @@ http://ats-lang.github.io/EXAMPLE/BUCS320/Doublets/Doublets.html
 ######
 """
 ####################################################
+
+def word_neighbors_legal(word):
+    return fnlist_filter_pylist(word_neighbors(word), word_is_legal)
+    
+def word_path_legal(word_path):
+    word1 = word_path[-1]
+    words = word_neighbors_legal(word1)
+    return [word_path + (word2,) for word2 in words]
+
+def bfs(words_queue, fchildren):
+    def bfs_helper(words_queue):
+        if words_queue.empty():
+            return strcon_nil()
+        else:
+            word1 = words_queue.get()
+
+            for word2 in fchildren(word1):
+                words_queue.put(word2)
+            return (word1, lambda: bfs_helper(words_queue))
+        
+    return lambda: bfs_helper(words_queue)
+
 def doublet_bfs_test(w1, w2):
-    """
-    Given two words w1 and w2, this function should
-    return None if w1 and w2 do not for a doublet. Otherwise
-    it returns a path connecting w1 and w2 that attests to the
-    two words forming a doublet.
-    """
-    raise NotImplementedError
+    words_queue = Q.Queue()
+    visited = set()
+    visited.add(w1)
+    words_queue.put((w1,))
+    while not words_queue.empty():
+        word_path = words_queue.get()
+        if word_path[-1] == w2:
+            return word_path
+        for neighbor in word_neighbors_legal(word_path[-1]):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                words_queue.put(word_path + (neighbor,))
+
+    return None
+                
+    
+
+
+    
+    
 ####################################################
