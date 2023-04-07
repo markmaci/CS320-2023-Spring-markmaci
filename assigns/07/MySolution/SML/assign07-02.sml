@@ -22,34 +22,22 @@ theNatPairs_cubesum: (int * int) stream = fn () =>
  
 (* end of [CS320-2023-Spring-assign07-02.sml] *)
 
-fun generate_pairs(n): (int*int) stream = fn() =>
-    let 
-      fun generate_pairs_aux(n:int, i:int): (int * int) stream = fn() =>
-           if i = n then strcon_cons((i,0), fn() => strcon_nil)
-                else strcon_cons((i,n-i), generate_pairs_aux(n, i+1)) 
-        in 
-            generate_pairs_aux(n, 0)()
-        end
-
-fun filtered(n): (int*int) stream = fn() =>
-    stream_make_filter(generate_pairs(n), fn (i, j) => i <= j)()
-
 fun cube_sum (i: int, j: int): int =
   i * i * i + j * j * j
 
+fun cube_sum_lte ((i1, j1), (i2, j2)): bool =
+  cube_sum(i1, j1) < cube_sum(i2, j2)
+
 fun theNatPairs_cubesum_aux(n:int): (int * int) stream = fn () =>
     let
-      fun helper(streamer : (int*int) stream): (int*int) stream = fn() =>
-        let
-          val x = stream_head(streamer)
-          val xs = stream_tail(streamer)
-        in
-          strcon_cons(x,stream_merge2(theNatPairs_cubesum_aux(n+1), xs, fn ((i1, j1),(i2,j2)) => cube_sum(i1, j1) < cube_sum(i2, j2)))
-        end
-
+      fun helper (i0: int): (int * int) stream = fn () =>
+        strcon_cons((i0, i0), stream_merge2(stream_tabulate(~1, fn j0 => (i0, i0 + j0 + 1)), helper(i0 + 1), cube_sum_lte))
     in
-      helper(filtered(n))()
+      helper(n)()
     end
 
 val theNatPairs_cubesum: (int * int) stream = fn () =>
   theNatPairs_cubesum_aux(0)()
+
+
+(* val () = stream_foreach(theNatPairs_cubesum, fn (x, y) => (print("("^Int.toString(x)^","^Int.toString(y)^")"); print("\n"))) *)
