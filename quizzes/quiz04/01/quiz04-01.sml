@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 use "./../../../mysmlib/mysmlib-cls.sml";
 
 fun stream_cycling_list(xs: 'a list): 'a stream = fn() => 
@@ -12,3 +13,16 @@ fun stream_cycling_list(xs: 'a list): 'a stream = fn() =>
 
 val xs = [1, 2, 3, 4, 5];
 val ys = stream_cycling_list xs;
+=======
+(* ****** ****** *)
+use "./../../../mysmlib/mysmlib-cls.sml";
+(* ****** ****** *)
+
+(*
+Please put your implementation here for quiz04-01
+*)
+
+(* ****** ****** *)
+
+(* end of [CS320-2023-Spring-quizzes-quiz04-01.sml] *)
+>>>>>>> upstream/main
