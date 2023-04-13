@@ -19,3 +19,13 @@ stream_permute_list(xs: 'a list): 'a list stream = ...
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign08-01.sml] *)
+
+fun
+stream_permute_list(xs: 'a list): 'a list stream =
+
+
+
+fun insrt_stream(a: 'a, ls: 'a list): 'a list stream = fn() => 
+  case ls of 
+    [] => strcon_cons(a, strcon_nil)
+    | x::xs => stream_cons((a:: x ::xs), stream_make_map(insrt_stream(a, xs),(fn l => x::l))) ()

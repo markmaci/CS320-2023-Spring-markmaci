@@ -16,5 +16,29 @@ def generator_merge2(gen1, gen2, lte3):
     The function generator_merge2 is expected to work correctly
     for both finite and infinite generators.
     """
-    raise NotImplementedError
+    val1 = next(gen1)
+    val2 = next(gen2)
+    while True:
+        if lte3(val1, val2):
+            yield val1
+            try :
+                val1 = next(gen1)
+            except StopIteration:
+                yield val2
+                for val2 in gen2:
+                    yield val2
+                return
+        else:
+            yield val2
+            try:
+                val2 = next(gen2)
+            except StopIteration:
+                yield val1
+                for val1 in gen1:
+                    yield val1
+                return
+        
+
+      
+
 ####################################################
