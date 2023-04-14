@@ -20,12 +20,23 @@ stream_permute_list(xs: 'a list): 'a list stream = ...
 
 (* end of [CS320-2023-Spring-assign08-01.sml] *)
 
-fun
-stream_permute_list(xs: 'a list): 'a list stream =
+fun list_insert_to_stream (element: 'a, list: 'a list): 'a list stream = fn() =>
+  case list of
+    [] => strcon_cons([element], fn()=> strcon_nil)
+  | x::xs => 
+    let val xss = list_insert_to_stream(element, xs) 
+    in 
+    stream_cons(element:: x ::xs, stream_make_map(xss, fn ys => x::ys))()
+    end
 
+fun permute_streams(xs: 'a list): 'a list stream = fn() => 
+  case xs of 
+    [] => strcon_cons([], fn() => strcon_nil)
+  | x::xs => 
+    let val xss = permute_streams(xs) 
+    in 
+    stream_concat(stream_make_map(xss, fn ys => list_insert_to_stream(x, ys)))() 
+    end
 
-
-fun insrt_stream(a: 'a, ls: 'a list): 'a list stream = fn() => 
-  case ls of 
-    [] => strcon_cons(a, strcon_nil)
-    | x::xs => stream_cons((a:: x ::xs), stream_make_map(insrt_stream(a, xs),(fn l => x::l))) ()
+fun stream_permute_list(xs: 'a list): 'a list stream = fn()=>
+  permute_streams(xs)()
