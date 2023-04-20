@@ -14,12 +14,38 @@ stream version of stream_ziplst (see Assign07-01).
 *)
 (* ****** ****** *)
 
-(*
-fun
-stream_zipstrm
-( fxss
-: 'a stream stream): 'a stream stream = ...
-*)
+
+fun stream_zipstrm (fxss: 'a stream stream): 'a stream stream = fn () =>
+  let
+    fun get_heads (strms: 'a stream stream): 'a list =
+      case strms() of
+        strcon_nil => []
+      | strcon_cons(strm, rest) => (stream_head strm) :: (get_heads rest)
+
+    fun get_tails (strms: 'a stream stream): 'a stream stream =
+      case strms() of
+        strcon_nil => strcon_nil
+      | strcon_cons(strm, rest) => strcon_cons(stream_tail strm, get_tails rest) 
+
+    fun zip_elements (strms: 'a stream stream): 'a stream strcon =
+      case strms() of
+        strcon_nil => strcon_nil
+      | strcon_cons(_, _) => strcon_cons(get_heads strms, stream_zipstrm (get_tails strms))
+  in
+    zip_elements fxss 
+  end
+
+
+
+
+
+
+(* ****** ****** *)
+
+(* end of [CS320-2023-Spring-midterm2-04.sml] *)
+
+(* ****** ****** *)
+
 
 (* ****** ****** *)
 

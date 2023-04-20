@@ -24,11 +24,27 @@ Then we have ln2 = stream_evaluate(fxs, 1.0) // see Assign06-01
 
 (* ****** ****** *)
 
-(*
-fun
-stream_evaluate
-(fxs: real stream, x0: real): real stream = ...
-*)
+
+(* ****** ****** *)
+
+
+fun stream_evaluate (fxs: real stream, x0: real): real stream = fn () =>
+  let
+    fun eval_partial_sums (fxs: real stream, x0: real, prev_sum: real, prev_x_power: real): real strcon = 
+      case fxs() of
+        strcon_nil => strcon_nil
+      | strcon_cons(a, tail) =>
+        let
+          val curr_x_power = prev_x_power * x0
+          val curr_sum = prev_sum + a * curr_x_power
+        in
+          strcon_cons(curr_sum, fn () => eval_partial_sums(tail, x0, curr_sum, curr_x_power))
+        end
+  in
+    eval_partial_sums(fxs, x0, 1.0, 1.0) 
+  end
+
+
 
 (* ****** ****** *)
 

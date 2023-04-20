@@ -35,11 +35,35 @@ perm_counting_out([1,2,3,4], 3) = [4,1,3,2]
 
 (* ****** ****** *)
 
-(*
-fun
-perm_counting_out
-(xs: int list, k0: int): int list = ...
-*)
+fun last_x(xs: int list, x: int): int list =
+    let
+        val n = length(xs)
+        val start_idx = n - x
+        fun last_x_helper(xs: int list, i: int): int list =
+            case xs of
+                [] => []
+              | y::ys => if i >= start_idx
+                             then y::last_x_helper(ys, i+1)
+                             else last_x_helper(ys, i+1)
+    in
+        last_x_helper(xs, 0)
+    end;
+
+
+fun perm_counting_out(xs: int list, k0: int): int list =
+    let
+        fun perm_counting_out_aux(xs: int list, k0: int, k: int, acc: int list): int list =
+            case xs of
+                [] => list_reverse(acc)
+            | x::xs_tail =>
+                if k = k0 then
+                    perm_counting_out_aux(xs_tail, k0, 0, x :: (acc @ xs_tail))
+                else
+                    perm_counting_out_aux(xs_tail @ [x], k0, k+1, acc)
+
+    in
+        last_x(perm_counting_out_aux(xs, k0, 0, []), length (xs))
+    end;
 
 (* ****** ****** *)
 

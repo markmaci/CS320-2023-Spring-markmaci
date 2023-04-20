@@ -21,10 +21,23 @@ For instance, [1,2,3,4] does not capture '231'
 
 (* ****** ****** *)
 
-(*
-fun
-perm_capture_231(xs: int list): bool = ...
-*)
+fun check_231(a, b, remaining) =
+    case remaining of
+        [] => false
+        | c :: remaining_tail =>
+        if c < a andalso a < b then
+            true
+        else
+            check_231(a, b, remaining_tail)
+
+fun perm_capture_231(xs: int list): bool = 
+    case xs of
+        [] => false
+        | x :: xss =>
+            case xss of
+            [] => false
+            | y :: xss_tail => 
+                check_231(x, y,xss) orelse perm_capture_231(xss) 
 
 (* ****** ****** *)
 
