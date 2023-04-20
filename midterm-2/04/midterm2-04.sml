@@ -20,9 +20,27 @@ use "./../../mysmlib/mysmlib-cls.sml";
 
 (* ****** ****** *)
 
-(*
+
 fun
-stream_drawdowns(fxs: int stream): int list stream = ... *)
+stream_drawdowns(fxs: int stream): int list stream = 
+let fun 
+  stream_drawdowns_aux(fxs: int stream): int list stream = 
+  let fun
+    stream_drawdowns_aux_aux(fxs: int stream, acc: int list): int list stream =
+    let val
+      head = stream_head(fxs)
+    in
+      if head < head fxs then
+        stream_cons(acc, stream_drawdowns_aux_aux(stream_tail(fxs), hd::acc))
+      else
+        stream_cons(acc, stream_drawdowns_aux_aux(stream_tail(fxs), [hd]))
+    end
+  in
+    stream_drawdowns_aux_aux(fxs, stream_head(fxs))
+  end
+in
+    stream_drawdowns_aux(fxs)
+    end
 
 (* ****** ****** *)
 
