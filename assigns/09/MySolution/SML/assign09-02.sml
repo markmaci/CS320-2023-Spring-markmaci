@@ -28,11 +28,28 @@ There is not much code to write here; the problem mainly
 test your understanding of continuations.
 *)
 //
-fun
-fgenerator_make_stream(fxs: 'a stream): 'a fgenerator = ...
+
 //
 *)
 
-(* ****** ****** *)
+fun
+fgenerator_make_stream2(fxs: 'a stream, ret, cret) = 
+    case fxs() of
+        strcon_nil =>
+            let 
+                val () = generator_yield(NONE, ret, cret)
+            in
+                fgenerator_make_stream2(fxs, ret, cret)
+            end
+        | strcon_cons(x, xs) =>
+            let
+                val () = generator_yield(SOME(x), ret, cret)
+            in
+                fgenerator_make_stream2(xs, ret, cret)
+            end
+    
 
-(* end of [CS320-2023-Spring-assigns-assign09-02.sml] *)
+fun fgenerator_make_stream(fxs: 'a stream): 'a fgenerator =
+    generator_make_fun(fn (ret, cret) => fgenerator_make_stream2(fxs, ret, cret))
+
+(* ****** ****** *)

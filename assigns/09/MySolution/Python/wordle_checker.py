@@ -28,5 +28,15 @@ wordle_hint(w1, w2) =
 """
 ########################################################################
 def wordle_hint(w1, w2):
-    raise NotImplementedError
+    length = len(w1)
+    hint = []
+    for i in range(length):
+        if w2[i] in w1:
+            if w1[i] == w2[i]:
+                hint.append((1, w2[i]))
+            else:
+                hint.append((2, w2[i]))
+        else:
+            hint.append((0, w2[i]))
+    return hint
 ########################################################################
