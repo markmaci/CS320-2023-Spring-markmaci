@@ -2,6 +2,8 @@
     "python.analysis.extraPaths": [
         "./assigns/02/MySolution",
         "./mypylib",
-        "./assigns/05/MySolution/Python"
+        "./assigns/05/MySolution/Python",
+        "./assigns/05",
+        "./assigns/10/MySolution/Python"
     ]
 }
